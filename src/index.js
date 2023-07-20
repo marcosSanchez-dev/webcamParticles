@@ -132,11 +132,16 @@ const initAudio = () => {
 const createParticles = () => {
   const imageData = getImageData(video);
   const geometry = new THREE.Geometry();
+  const textureLoader = new THREE.TextureLoader();
+  const particleTexture = textureLoader.load("textures/particles/2.png");
+
   geometry.morphAttributes = {}; // This is necessary to avoid error.
   const material = new THREE.PointsMaterial({
-    size: 1,
-    color: "white",
-    sizeAttenuation: false,
+    size: 15,
+    sizeAttenuation: true,
+    map: particleTexture,
+    alphaTest: 0.5,
+    transparent: true,
   });
 
   for (let y = 0, height = imageData.height; y < height; y += 1) {
