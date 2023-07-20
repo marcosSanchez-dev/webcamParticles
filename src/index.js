@@ -29,6 +29,7 @@ const init = () => {
   scene.background = new THREE.Color(0x111111);
 
   renderer = new THREE.WebGLRenderer();
+
   document.getElementById("content").appendChild(renderer.domElement);
 
   clock = new THREE.Clock();
@@ -69,7 +70,7 @@ const initCamera = () => {
   const aspect = width / height;
 
   camera = new THREE.PerspectiveCamera(fov, aspect, 0.1, 10000);
-  const z = Math.min(window.innerWidth, window.innerHeight);
+  const z = Math.min(window.innerWidth / 1.3, window.innerHeight / 1.3);
   camera.position.set(0, 0, z);
   camera.lookAt(0, 0, 0);
 
@@ -107,7 +108,7 @@ const initAudio = () => {
 
   const audioLoader = new THREE.AudioLoader();
   // https://www.newgrounds.com/audio/listen/232941
-  audioLoader.load("asset/morena.wav", (buffer) => {
+  audioLoader.load("asset/alvaOne.wav", (buffer) => {
     document.body.classList.remove(classNameForLoading);
 
     audio.setBuffer(buffer);
@@ -137,9 +138,8 @@ const createParticles = () => {
 
   geometry.morphAttributes = {}; // This is necessary to avoid error.
   const material = new THREE.PointsMaterial({
-    size: 15,
+    size: 2,
     sizeAttenuation: true,
-    map: particleTexture,
     alphaTest: 0.001,
     transparent: true,
   });
@@ -210,6 +210,7 @@ const draw = (t) => {
   if (analyser) {
     // analyser.getFrequencyData() would be an array with a size of half of fftSize.
     const data = analyser.getFrequencyData();
+    // const data = [0];
     // console.log("data: ", data);
 
     const bass = getFrequencyRangeValue(data, frequencyRange.bass);
@@ -223,7 +224,7 @@ const draw = (t) => {
 
   // video
   if (particles) {
-    particles.material.color.r = 1 - r;
+    particles.material.color.r = 1;
     particles.material.color.g = 1 - r;
     particles.material.color.b = 1 - r;
 
@@ -251,11 +252,11 @@ const draw = (t) => {
       if (gray < threshold) {
         if (gray < threshold / 3) {
           // ! Profundidad
-          particle.z = gray * r * 1;
+          particle.z = gray * r * 2;
         } else if (gray < threshold / 2) {
-          particle.z = gray * g * 1;
+          particle.z = gray * g * 2;
         } else {
-          particle.z = gray * b * 1;
+          particle.z = gray * b * 2;
         }
       } else {
         particle.z = 10000;
