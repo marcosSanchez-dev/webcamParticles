@@ -10,6 +10,16 @@ const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
 
 const classNameForLoading = "loading";
+const videoElement = document.querySelector("#videoElement");
+
+navigator.mediaDevices
+  .getUserMedia({ video: true })
+  .then(function (stream) {
+    videoElement.srcObject = stream;
+  })
+  .catch(function (error) {
+    console.log("Something went wrong:", error);
+  });
 
 // audio
 let audio, analyser;
@@ -229,7 +239,7 @@ const draw = (t) => {
     particles.material.color.b = 1 - r;
 
     // ! numero de particular
-    const density = 2;
+    const density = 1;
     const useCache = parseInt(t) % 2 === 0; // To reduce CPU usage.
     const imageData = getImageData(video, useCache);
     for (
@@ -252,11 +262,11 @@ const draw = (t) => {
       if (gray < threshold) {
         if (gray < threshold / 3) {
           // ! Profundidad
-          particle.z = gray * r * 2;
+          particle.z = gray * r * 3;
         } else if (gray < threshold / 2) {
-          particle.z = gray * g * 2;
+          particle.z = gray * g * 3;
         } else {
-          particle.z = gray * b * 2;
+          particle.z = gray * b * 3;
         }
       } else {
         particle.z = 10000;

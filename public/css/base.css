@@ -211,3 +211,14 @@ a:focus {
     justify-content: center;
   }
 }
+
+#container {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#videoElement {
+  width: 250;
+  height: 175px;
+  background-color: #666;
+}
