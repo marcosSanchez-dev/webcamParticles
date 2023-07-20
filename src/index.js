@@ -113,7 +113,7 @@ const initAudio = () => {
     audio.setBuffer(buffer);
     audio.setLoop(true);
     audio.setVolume(0.5);
-    // audio.play();
+    audio.play();
   });
 
   analyser = new THREE.AudioAnalyser(audio, fftSize);
@@ -140,7 +140,7 @@ const createParticles = () => {
     size: 15,
     sizeAttenuation: true,
     map: particleTexture,
-    alphaTest: 0.5,
+    alphaTest: 0.001,
     transparent: true,
   });
 
@@ -209,7 +209,7 @@ const draw = (t) => {
   // audio
   if (analyser) {
     // analyser.getFrequencyData() would be an array with a size of half of fftSize.
-    const data = [50];
+    const data = analyser.getFrequencyData();
     // console.log("data: ", data);
 
     const bass = getFrequencyRangeValue(data, frequencyRange.bass);
@@ -223,10 +223,11 @@ const draw = (t) => {
 
   // video
   if (particles) {
-    // particles.material.color.r = 1 - r;
-    // particles.material.color.g = 1 - g;
-    // particles.material.color.b = 1 - b;
+    particles.material.color.r = 1 - r;
+    particles.material.color.g = 1 - r;
+    particles.material.color.b = 1 - r;
 
+    // ! numero de particular
     const density = 2;
     const useCache = parseInt(t) % 2 === 0; // To reduce CPU usage.
     const imageData = getImageData(video, useCache);
@@ -249,11 +250,12 @@ const draw = (t) => {
       let threshold = 300;
       if (gray < threshold) {
         if (gray < threshold / 3) {
-          particle.z = gray * r * 5;
+          // ! Profundidad
+          particle.z = gray * r * 1;
         } else if (gray < threshold / 2) {
-          particle.z = gray * g * 5;
+          particle.z = gray * g * 1;
         } else {
-          particle.z = gray * b * 5;
+          particle.z = gray * b * 1;
         }
       } else {
         particle.z = 10000;
