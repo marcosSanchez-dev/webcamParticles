@@ -1,28 +1,29 @@
-const path = require("path");
+let path = require("path");
 
 module.exports = {
-  mode: "production",
   entry: {
     index: "./src/index.js",
     index2: "./src/index2.js",
   },
   output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "public"),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
-      // Agrega aquí otros loaders si es necesario
-    ],
+    filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    clean: true,
   },
   plugins: [
-    // Agrega plugins como HtmlWebpackPlugin si es necesario
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      chunks: ["index"],
+      filename: "index.html",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/index2.html",
+      chunks: ["index2"],
+      filename: "index2.html",
+    }),
   ],
+  devServer: {
+    contentBase: path.join(__dirname, "public"),
+  },
 };
