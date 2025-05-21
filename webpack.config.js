@@ -1,15 +1,28 @@
-let path = require('path');
+const path = require("path");
 
 module.exports = {
-    entry: {
-        'index': './src/index.js',
-        'index2': './src/index2.js',
-    },
-    output: {
-        filename: '[name].js',
-        path: path.join(__dirname, 'public'),
-    },
-    devServer: {
-        contentBase: path.join(__dirname, 'public')
-    }
+  mode: "production",
+  entry: {
+    index: "./src/index.js",
+    index2: "./src/index2.js",
+  },
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, "public"),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      // Agrega aquí otros loaders si es necesario
+    ],
+  },
+  plugins: [
+    // Agrega plugins como HtmlWebpackPlugin si es necesario
+  ],
 };
